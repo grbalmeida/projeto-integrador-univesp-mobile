@@ -9,9 +9,6 @@ export default function Instituicoes() {
     useEffect(() => {
         const getInstituicoes = async () => {
             const resultado = await obterInstituicoes();
-            console.log('TESTE');
-            console.log(resultado);
-            console.log('TESTE 2');
             setInstituicoes(resultado);
         };
 

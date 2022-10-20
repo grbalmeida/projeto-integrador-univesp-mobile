@@ -18,15 +18,15 @@ const cores = {
 export default function Rotas() {
     return <NavigationContainer>
        <Tab.Navigator
-            screenOptions={{
-                tabBarActiveTintColor: cores.preto,
-                tabBarInactiveTintColor: cores.preto,
-                tabBarActiveBackgroundColor: cores.laranjaEscuro,
-                tabBarInactiveBackgroundColor: cores.laranjaClaro,
-                tabBarStyle: {
-                    height: 70
+            tabBarOptions={{
+                activeTintColor: cores.preto,
+                inactiveTintColor: cores.preto,
+                activeBackgroundColor: cores.laranjaEscuro,
+                inactiveBackgroundColor: cores.laranjaClaro,
+                style: {
+                    height: 70,
                 },
-                tabBarLabelStyle: {
+                labelStyle: {
                     width: '100%',
                     flex: 1,
                     fontWeight: 'bold',
@@ -34,14 +34,14 @@ export default function Rotas() {
                     lineHeight: 21,
                     marginTop: 3,
                     paddingTop: 21,
-                    backgroundColor: cores.laranjaClaro
+                    backgroundColor: cores.laranjaClaro,
                 },
-                tabBarHideOnKeyboard: true,
+                keyboardHidesTabBar: true,
             }}
         >
-            <Tab.Screen name='Instituições' component={Instituicoes} options={{tabBarIcon: () => null}} />
-            <Tab.Screen name='Contato' component={Contato} options={{tabBarIcon: () => null}} />
-            <Tab.Screen name='Nova instituição' component={Cadastro} options={{tabBarIcon: () => null}} />
+            <Tab.Screen name='Instituições' component={Instituicoes} />
+            <Tab.Screen name='Contato' component={Contato} />
+            <Tab.Screen name='Nova instituição' component={Cadastro} />
         </Tab.Navigator>
     </NavigationContainer>
 }
