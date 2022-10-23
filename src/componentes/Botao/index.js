@@ -20,7 +20,8 @@ const estilos = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 6
+        borderRadius: 6,
+        marginBottom: 16
     },
     botaoTexto: {
         color: '#000000',
