@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Alert } from 'react-native';
 
 import Title from '../../componentes/Title';
 import CampoTexto from '../../componentes/CampoTexto';
@@ -8,8 +8,12 @@ import Botao from '../../componentes/Botao';
 import ComboBox from '../../componentes/ComboBox';
 
 import { obterCategorias } from '../../servicos/requisicoes/categorias';
+import { cadastrarInstituicao } from '../../servicos/requisicoes/instituicoes';
+import InstituicaoModel from '../../models/Instituicao';
 
 export default function Cadastro() {
+
+    const [autoFocusNome, setAutoFocusNome] = useState(true);
 
     const [nome, setNome] = useState('');
     const [cnpj, setCnpj] = useState('');
@@ -54,16 +58,48 @@ export default function Cadastro() {
         
     }, []);
 
-    useEffect
+    async function salvar() {
+        const instituicao = new InstituicaoModel(nome, cnpj, descricao, categoria);
+        instituicao.setEndereco(cep, logradouro, numero, complemento, bairro);
+        instituicao.setContato(email, telefoneComercial, telefoneCelular, site, instagram, facebook, '', '', '');
 
-    function cadastrarInstituicao() {
+        const resultado = await cadastrarInstituicao(instituicao);
 
+        if (resultado === 'sucesso') {
+            limparFormulario();
+            Alert.alert('Instituição cadastrada com sucesso');
+        } else {
+            if (resultado === 'erro') {
+                Alert.alert('Erro ao tentar cadastrar instituição');
+            } else {
+                console.log({resultado})
+                Alert.alert(resultado[0]);
+            }
+        }
+    }
+
+    function limparFormulario() {
+        setNome('');
+        setCnpj('');
+        setDescricao('');
+        setCep('');
+        setLogradouro('');
+        setNumero('');
+        setBairro('');
+        setComplemento('');
+        setTelefoneComercial('');
+        setTelefoneCelular('');
+        setEmail('');
+        setSite('');
+        setInstagram('');
+        setFacebook('');
+        setAutoFocusNome(true);
     }
 
     return <ScrollView>
         <Title>Cadastro de Instituições</Title>
         <View>
-            <CampoTexto title='Nome' value={nome} onChangeText={setNome} />
+            <CampoTexto title='Nome' value={nome} onChangeText={setNome} autoFocus={autoFocusNome} />
             <CampoTexto title='CNPJ' value={cnpj} onChangeText={setCnpj} />
             <CampoTexto title='Descrição' value={descricao} onChangeText={setDescricao} />
             <ComboBox
@@ -139,6 +175,6 @@ export default function Cadastro() {
             <CampoTexto title='Facebook' value={facebook} onChangeText={setFacebook} />
         </View>
 
-        <Botao title='Enviar' onPress={cadastrarInstituicao} />
+        <Botao title='Enviar' onPress={salvar} />
     </ScrollView>
 }

@@ -2,12 +2,15 @@ import React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Instituicoes from './telas/Instituicoes';
 import Contato from './telas/Contato';
 import Cadastro from './telas/Cadastro';
+import Instituicao from './telas/Instituicao';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const cores = {
     laranjaClaro: '#ffebcc',
@@ -16,6 +19,7 @@ const cores = {
 };
 
 export default function Rotas() {
+
     return <NavigationContainer>
        <Tab.Navigator
             tabBarOptions={{

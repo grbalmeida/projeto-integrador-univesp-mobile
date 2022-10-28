@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, Text, Image, StyleSheet, View } from 'react-native';
 import { obterInstituicoes } from '../../servicos/requisicoes/instituicoes';
 
-export default function Instituicoes() {
+export default function Instituicoes({ route, navigation }) {
     const [instituicoes, setInstituicoes] = useState([]);
 
     useEffect(() => {
@@ -15,13 +15,12 @@ export default function Instituicoes() {
         getInstituicoes();
     }, []);
 
-
     return <>
         <FlatList
             data={instituicoes}
             removeClippedSubviews={false}
             renderItem={({ item }) => (
-                <TouchableOpacity style={{flexDirection: 'row'}}>
+                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => navigation.navigate('Instituicao', { id: item.id })}>
                     <Image style={estilos.imagem} source={{uri: item.logo}} />
                     <View style={estilos.informacoes}>
                         <Text style={estilos.nome}>{ item.name }</Text>
