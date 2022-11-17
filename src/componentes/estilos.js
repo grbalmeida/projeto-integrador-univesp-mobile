@@ -17,4 +17,18 @@ export default StyleSheet.create({
         borderRadius: 8,
         padding: 12
     },
+    botao: {
+        backgroundColor: '#ffa500',
+        width: '30%',
+        height: 40,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 6,
+        marginBottom: 16
+    },
+    botaoTexto: {
+        color: '#000000',
+        fontSize: 20,
+    }
 });
