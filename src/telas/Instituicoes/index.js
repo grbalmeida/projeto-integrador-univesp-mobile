@@ -107,6 +107,7 @@ const estilos = StyleSheet.create({
         fontSize: 14,
         lineHeight: 22,
         fontWeight: 'bold',
+        color: '#000'
     },
     informacoes: {
         flex: 1,
