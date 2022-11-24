@@ -7,6 +7,7 @@ import VisiteNossoSite from '../../componentes/VisiteNossoSite';
 
 import { obterInstituicoes } from '../../servicos/requisicoes/instituicoes';
 
+import logoApp from '../../assets/logo.png';
 
 export default function Instituicoes({ route, navigation }) {
     const [instituicoes, setInstituicoes] = useState([]);
@@ -14,6 +15,9 @@ export default function Instituicoes({ route, navigation }) {
     const [logo, setLogo] = useState('');
     const [descricao, setDescricao] = useState('');
     const [site, setSite] = useState('');
+    const [instagram, setInstagram] = useState('');
+    const [facebook, setFacebook] = useState('');
+    const [whatsapp, setWhatsapp] = useState('');
     const [exibirModalInstituicao, setExibirModalInstituicao] = useState(false);
 
     useEffect(() => {
@@ -31,11 +35,32 @@ export default function Instituicoes({ route, navigation }) {
         setLogo(instituicao.logo);
         setDescricao(instituicao.description);
         setSite(instituicao.contact.site);
+        setFacebook(instituicao.contact.facebook);
+        setInstagram(instituicao.contact.instagram);
+        setWhatsapp(instituicao.contact.mobile);
     }
 
     function abrirSite(site) {
         Linking.openURL(site)
             .catch(err => console.error("Couldn't load page", err));
+    }
+
+    function abrirWhatsapp(whatsapp) {
+        Linking.openURL(`whatsapp://send?phone=${whatsapp}`)
+            .catch(error => {
+                Linking.openURL(`https://api.whatsapp.com/send?phone=${whatsapp}`)
+                    .catch(error => {});
+            });
+    }
+
+    function abrirFacebook(facebook) {
+        Linking.openURL(facebook)
+            .catch(error => {});
+    }
+
+    function abrirInstagram(instagram) {
+        Linking.openURL(instagram)
+            .catch(error => {});
     }
 
     return <>
@@ -66,19 +91,23 @@ export default function Instituicoes({ route, navigation }) {
                 <View style={estilos.containerLinks}>
                     {site && <VisiteNossoSite onPress={() => abrirSite(site)} />}
                     <View style={estilos.containerRedeSocial}>
-                        <TouchableOpacity>
+                        {facebook && <TouchableOpacity onPress={() => abrirFacebook(facebook)}>
                             <Icon style={estilos.icone} name="facebook" size={40} color="#4267B2" />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
+                        </TouchableOpacity>}
+                        {instagram && <TouchableOpacity onPress={() => abrirInstagram(instagram)}>
                             <Icon style={estilos.icone} name="instagram" size={40} color="#C13584" />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
+                        </TouchableOpacity>}
+                        {whatsapp && <TouchableOpacity onPress={() => abrirWhatsapp(whatsapp)}>
                             <Icon style={estilos.icone} name="whatsapp" size={40} color="#25D366" />
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
                     </View>
                 </View>
             </ScrollView>
         </Modal>
+        <View style={estilos.logoContainer}>
+            <Image source={logoApp} style={estilos.logo} />
+            <Text style={estilos.tituloApp}>Portal Solidário de Araraquara</Text>
+        </View>
         <FlatList
             data={instituicoes}
             removeClippedSubviews={false}
@@ -138,12 +167,14 @@ const estilos = StyleSheet.create({
     nomeModal: {
         margin: 10,
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#000', 
     },
     descricaoModal: {
         margin: 10,
         fontSize: 18,
-        lineHeight: 26
+        lineHeight: 26,
+        color: '#000'
     },
     containerLinks: {
         display: 'flex',
@@ -158,5 +189,22 @@ const estilos = StyleSheet.create({
     },
     icone: {
         marginHorizontal: 10,
+    },
+    logoContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    tituloApp: {
+        color: '#000',
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
+    logo: {
+        width: 50,
+        height: 50,
+        marginLeft: 10,
+        marginRight: 20,
     }
 })

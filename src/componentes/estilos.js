@@ -4,7 +4,7 @@ export default StyleSheet.create({
     label: {
         alignSelf: 'flex-start',
         color: '#000000',
-        marginBottom: 8
+        marginBottom: 8,
     },
     inputContainer: {
         marginLeft: '5%'
