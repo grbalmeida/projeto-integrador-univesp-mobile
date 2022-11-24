@@ -46,7 +46,7 @@ export default function Instituicoes({ route, navigation }) {
     }
 
     function abrirWhatsapp(whatsapp) {
-        whatsapp = `+55${whatsapp}`;
+        whatsapp = `55${whatsapp}`;
         Linking.openURL(`whatsapp://send?phone=${whatsapp}`)
             .catch(error => {
                 Linking.openURL(`https://api.whatsapp.com/send?phone=${whatsapp}`)
