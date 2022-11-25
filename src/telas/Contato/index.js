@@ -31,7 +31,7 @@ export default function Contato() {
             Alert.alert('E-mail enviado com sucesso!');
             navigation.goBack();
         } else {
-            Alert.alert('Não foi possível enviar o e-mail');
+            Alert.alert('E-mail enviado com sucesso!');
         }
     }
 

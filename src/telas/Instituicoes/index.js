@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { FlatList, TouchableOpacity, Text, Image, StyleSheet, View, Modal, ScrollView, Linking } from 'react-native';
+import { FlatList, Pressable, TouchableOpacity, Text, Image, StyleSheet, View, Modal, ScrollView, Linking, ActivityIndicator } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import VisiteNossoSite from '../../componentes/VisiteNossoSite';
-
 import { obterInstituicoes } from '../../servicos/requisicoes/instituicoes';
 
 import logoApp from '../../assets/logo.png';
+import BotaoMapa from '../../componentes/BotaoMapa';
 
 export default function Instituicoes({ route, navigation }) {
     const [instituicoes, setInstituicoes] = useState([]);
@@ -18,12 +18,26 @@ export default function Instituicoes({ route, navigation }) {
     const [instagram, setInstagram] = useState('');
     const [facebook, setFacebook] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
+    const [comercial, setComercial] = useState('');
+    const [logradouro, setLogradouro] = useState('');
+    const [numero, setNumero] = useState('');
+    const [bairro, setBairro] = useState('');
+    const [cidade, setCidade] = useState('');
+    const [estado, setEstado] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
     const [exibirModalInstituicao, setExibirModalInstituicao] = useState(false);
+
+    const abrirMapa = () => {
+        const daddr = `${logradouro}, ${numero} ${bairro}, ${cidade} - ${estado}`
+        Linking.openURL(`http://maps.google.com/maps?daddr=${daddr}`);
+      };
+    
 
     useEffect(() => {
         const getInstituicoes = async () => {
             const resultado = await obterInstituicoes();
             setInstituicoes(resultado);
+            setIsLoading(false);
         };
 
         getInstituicoes();
@@ -38,6 +52,12 @@ export default function Instituicoes({ route, navigation }) {
         setFacebook(instituicao.contact.facebook);
         setInstagram(instituicao.contact.instagram);
         setWhatsapp(instituicao.contact.mobile);
+        setComercial(instituicao.contact.comercial);
+        setLogradouro(instituicao.address.street);
+        setNumero(instituicao.address.number);
+        setBairro(instituicao.address.district);
+        setCidade(instituicao.address.city);
+        setEstado(instituicao.address.state);
     }
 
     function abrirSite(site) {
@@ -54,6 +74,11 @@ export default function Instituicoes({ route, navigation }) {
             });
     }
 
+    function abrirPhone(comercial) {
+        Linking.openURL(`tel:+55 ${comercial}`)
+            .catch(error => {});
+    }
+
     function abrirFacebook(facebook) {
         Linking.openURL(facebook)
             .catch(error => {});
@@ -64,11 +89,11 @@ export default function Instituicoes({ route, navigation }) {
             .catch(error => {});
     }
 
-    return <>
+    return <View>
         <Modal
             visible={exibirModalInstituicao}
             animationType='slide'
-            onRequestClose={() => {console.log('Modal has been closed.');}}
+            onRequestClose={() => {}}
             transparent={false}
          >
             <ScrollView style={estilos.containerModal}>
@@ -101,14 +126,23 @@ export default function Instituicoes({ route, navigation }) {
                         {whatsapp && <TouchableOpacity onPress={() => abrirWhatsapp(whatsapp)}>
                             <Icon style={estilos.icone} name="whatsapp" size={40} color="#25D366" />
                         </TouchableOpacity>}
+                        {comercial && <TouchableOpacity onPress={() => abrirPhone(comercial)}>
+                            <Icon style={estilos.icone} name="phone" size={40} color="#25D366" />
+                        </TouchableOpacity>}
                     </View>
                 </View>
+                <Pressable>
+                    <BotaoMapa onPress={() => abrirMapa()} />
+                </Pressable>
             </ScrollView>
         </Modal>
         <View style={estilos.logoContainer}>
             <Image source={logoApp} style={estilos.logo} />
             <Text style={estilos.tituloApp}>Portal Solidário de Araraquara</Text>
         </View>
+        {isLoading && <View style={estilos.loadingBackground}>
+            <ActivityIndicator size="large" color='orange' />
+        </View>}
         <FlatList
             data={instituicoes}
             removeClippedSubviews={false}
@@ -122,7 +156,7 @@ export default function Instituicoes({ route, navigation }) {
             )}
             keyExtractor={({id}) => String(id)}
         />
-    </>
+    </View>
 }
 
 const estilos = StyleSheet.create({
@@ -207,5 +241,25 @@ const estilos = StyleSheet.create({
         height: 50,
         marginLeft: 10,
         marginRight: 20,
+    },
+    loading: {
+        flex: 1,
+        justifyContent: "center",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10,
+    },
+    loadingBackground: {
+        position: "absolute",
+        zIndex: 1,
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#ffebcc",
+        height: 700,
+        opacity: 0.7,
     }
-})
+});

@@ -22,9 +22,6 @@ export async function cadastrarInstituicao(instituicao) {
             formDataInstituicao.append(key, instituicao[key]);
         }
 
-        // console.log('getBoundary', formDataInstituicao.getBoundary);
-        // console.log('-----------------------------------------------')
-
         await api({
             url: '/cadastrar',
             method: 'POST',

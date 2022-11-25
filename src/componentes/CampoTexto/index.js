@@ -10,7 +10,7 @@ export default function CampoTexto({ title, value, onChangeText, autoFocus = fal
         <TextInput
             placeholder={title}
             editable
-            maxLength={40}
+            maxLength={200}
             style={estilosGlobal.inputTexto}
             value={value}
             onChangeText={onChangeText}

@@ -72,7 +72,6 @@ export default function Cadastro() {
             if (resultado === 'erro') {
                 Alert.alert('Erro ao tentar cadastrar instituição');
             } else {
-                console.log({resultado})
                 Alert.alert(resultado[0]);
             }
         }
